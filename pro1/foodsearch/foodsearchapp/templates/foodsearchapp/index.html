@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Food Search App</title>
+    
+    <!-- Add Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">Food Search App</h1>
+        <form method="post">
+            {% csrf_token %}
+            
+            <!-- Select Veg/Non-Veg Dropdown -->
+            <div class="form-group">
+                <label for="veg_non_veg">Select Veg/Non-Veg:</label>
+                <select class="form-control" id="veg_non_veg" name="veg_non_veg">
+                    <option value="" selected disabled>Select</option>
+                    <option value="Veg" {% if selected_veg_non_veg == 'Veg' %}selected{% endif %}>Veg</option>
+                    <option value="Non-Veg" {% if selected_veg_non_veg == 'Non-Veg' %}selected{% endif %}>Non-Veg</option>
+                </select>
+            </div>
+
+            <!-- Select Category Dropdown -->
+            <div class="form-group">
+                <label for="category">Select Category:</label>
+                <select class="form-control" id="category" name="category">
+                    <option value="" selected disabled>Select</option>
+                    {% for choice in category_choices %}
+                        <option value="{{ choice }}" {% if selected_category == choice %}selected{% endif %}>{{ choice }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Display price range -->
+            {% if price_range.min_price and price_range.max_price %}
+            <p>Price Range: ${{ price_range.min_price }} - ${{ price_range.max_price }}</p>
+            {% endif %}
+
+            <!-- Display product ratings -->
+            <ul class="list-group">
+                {% for product, rating in product_ratings.items %}
+                    <li class="list-group-item">
+                        {{ product.product_name }} - 
+                        {% if rating %}
+                            Rating: {{ rating }}
+                        {% else %}
+                            No Ratings
+                        {% endif %}
+                        <br>
+                        Price: ${{ product.price }}
+                    </li>
+                {% empty %}
+                    <li class="list-group-item">No products match the selected criteria.</li>
+                {% endfor %}
+            </ul>
+            
+            <input type="submit" class="btn btn-primary mt-3" value="Apply Filters">
+            
+            <!-- Display toppings for customizable categories -->
+            {% for product, product_toppings in toppings %}
+                <div class="form-group mt-3">
+                    <label for="topping">Select Toppings for {{ product.product_name }}:</label>
+                    <select class="form-control" id="topping" name="topping">
+                        <option value="" selected disabled>Select</option>
+                        {% for topping in product_toppings %}
+                            <option value="{{ topping.topping_name }}">{{ topping.topping_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            {% endfor %} 
+            <button type="submit" class="btn btn-primary mt-3">Submit Order</button>
+            
+        </form>
+        <div class="mt-4" id="thank-you-message" style="display: none;">
+            <h2>Thank you for your order!</h2>
+        </div>
+    </div>
+
+    <!-- Add Bootstrap JS and jQuery (optional) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
