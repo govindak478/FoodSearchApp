@@ -77,10 +77,10 @@ WSGI_APPLICATION = "foodsearch.wsgi.application"
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'fooders',  
-        'USER': 'root',     
-        'PASSWORD': '8177',   
-        'HOST': 'localhost',         
+        'NAME': 'govindak8177$fooders',  
+        'USER': 'govindak8177',     
+        'PASSWORD': 'Rudra@8177',   
+        'HOST': 'govindak8177.mysql.pythonanywhere-services.com',         
         'PORT': '3306',                
     }
 }
